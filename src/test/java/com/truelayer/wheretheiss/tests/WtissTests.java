@@ -22,15 +22,15 @@ public class WtissTests extends BaseTest {
 
 
     @Story("Get Satellite positions")
-    @Test
+    @Test(description = "Get Satellite position with default Unit kilometers and one timestamp")
     public void SuccessfullyGetPositionDefaultUnitForAGivenTimeStamp() {
-        Response response = WTISSApi.getPosition(DataLoader.getInstance().getCatalogId(), DataLoader.getInstance().get_timestamp_list());
-        System.out.println("response is " +response.getBody().asPrettyString());
+        Response response = WTISSApi.getPosition(DataLoader.getInstance().getCatalogId(), DataLoader.getInstance().get_timestamp());
+        System.out.println("response is " + response.getBody().asPrettyString());
         assertStatusCode(response.statusCode(), StatusCode.CODE_200);
         assertWtissEqual(response.as(Wtiss[].class));
     }
 
-    @Test
+    @Test(description = "Get Satellite position with Unit as Miles and 2 timestamps")
     public void SuccessfullyGetPositionMileUnitForMaxTimeStamp() {
         Response response = WTISSApi.getPosition(DataLoader.getInstance().getCatalogId(), DataLoader.getInstance().get_timestamp_list(), DataLoader.getInstance().get_unit_miles());
         assertStatusCode(response.statusCode(), StatusCode.CODE_200);
@@ -38,16 +38,15 @@ public class WtissTests extends BaseTest {
     }
 
     @Story("Negative - Get Satellite positions")
-    @Test
+    @Test(description = "Negative scenario to test if the timestamp provided is more than 10")
     public void NotAllowToGetMoreThan10TimeStamp() {
         Response response = WTISSApi.getPosition(DataLoader.getInstance().getCatalogId(), DataLoader.getInstance().get_timestamp_list_error(), DataLoader.getInstance().get_unit_miles());
         assertStatusCode(response.statusCode(), StatusCode.CODE_400);
         assertWtissEqual(response.as(Wtiss[].class));
     }
 
-    @Test
-    public void SuccessfullyGetTLESDefault(){
-        //Wtiss requestBuilder = wtissBuilder();
+    @Test(description = "Get TLES data with default format as json")
+    public void SuccessfullyGetTLESDefault() {
         Response response = WTISSApi.getTLES(DataLoader.getInstance().getCatalogId());
         assertStatusCode(response.statusCode(), StatusCode.CODE_200);
         assertWtissTLEEqual(response.as(WtissTLE.class));
@@ -62,27 +61,22 @@ public class WtissTests extends BaseTest {
     }*/
 
 
-    @Step
-    public Wtiss wtissBuilder(){
-        return Wtiss.builder().
-                build();
-    }
 
     @Step
-        public void assertWtissEqual(Wtiss[] responseWtiss){
-        int count =0;
+    public void assertWtissEqual(Wtiss[] responseWtiss) {
+        int count = 0;
         List<Wtiss> resultList = Arrays.stream(responseWtiss).collect(Collectors.toList());
-        resultList.forEach( x -> {
-            if(x.getName().equals("iss")){
-                System.out.println("success");
-                assertThat(" name matches ", true);
-            }else{
-                System.out.println("failed");
-                assertThat(" name mismatches ", false);
+        resultList.forEach(x -> {
+                               if (x.getName().equals("iss")) {
+                                   System.out.println("success");
+                                   assertThat(" name matches ", true);
+                               } else {
+                                   System.out.println("failed");
+                                   assertThat(" name mismatches ", false);
 
-            }
+                               }
 
-            }
+                           }
 
         );
         count = resultList.size();
@@ -99,7 +93,7 @@ public class WtissTests extends BaseTest {
                                    assertThat(" id match ", true);
                                } else {
                                    System.out.println("failed");
-                                   assertThat("no id match ",false);
+                                   assertThat("no id match ", false);
                                }
 
                            }
@@ -111,10 +105,9 @@ public class WtissTests extends BaseTest {
 
 
     @Step
-    public void assertStatusCode(int actualStatusCode, StatusCode statusCode){
+    public void assertStatusCode(int actualStatusCode, StatusCode statusCode) {
         assertThat(actualStatusCode, equalTo(statusCode.code));
     }
-
 
 
 }
