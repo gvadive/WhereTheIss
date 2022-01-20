@@ -8,14 +8,12 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Value
 @Jacksonized
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Wtiss {
+public class WtIssPosition {
 
  @JsonProperty("name")
  String name;

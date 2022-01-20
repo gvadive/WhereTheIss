@@ -1,4 +1,13 @@
-Pre-requisites
+Issue observations made by me:
+1.) The framework has been created to test the same timestamp each time (ofcourse we can change it when needed) to check consistency of longitude/latitude calc, however there are minute changes in values as evidenced in each test run
+2.) There are discrepancies in the decimal places when converting the values from kilometers to miles - same with velocity calculations
+3.) There are no restrictions to the length of timestamp that can be passed as it can potentially lead to DoD attacks as it impacts performance and server takes 30 mins for intentionally larger timestamp values eg: 1000000000000000000000000
+    My humble suggestion would be to introduce field length validation for such critical functions that affect performance
+4.) The document says that the maximum allowed timestamp in the list for satellites/[id]/positions is 10 however we can pass any number and the api returns
+    My humble suggestion would be to introduce any pagination limit or some sort of limit
+
+****************************************************************************************
+Pre-requisites to run test
 1.Please install maven and Java 8 or above is required
 2.To view Allure reporting, please download allure through homebrew or from below url (please set the bin directory of allure to your PATH)
     https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.13.8/
@@ -7,8 +16,10 @@ Steps to run all tests
 1.Please clone the repo locally from git (https://github.com/gvadive/WhereTheIss.git)
 2.Open the project as maven project in the IDE
 3.Go to the "Terminal" tab in the bottom (or locate the path where you cloned and ensure you are in the same location as that of pom file)
-4.Enter the following command
-    mvn test -DBASE_URI="https://api.wheretheiss.at/"
+4a.Enter the following command
+    mvn clean test -DBASE_URI="https://api.wheretheiss.at/"
+4b. Alternatively if you wish to run the test through IDE, then please disable line 16 in com.truelayer.wheretheiss.api.SpecBuilder and enable line 17. Once done please head over to com.truelayer.wheretheiss.tests.WtIssPositionTests and right click to run all tests
 5.The above command allows us to send different base environment urls (staging/dev etc) making it robust
-
+6. Once the test is complete, please run below command in the command line for the allure report which will be presented locally (pls follow pre-requisite to install allure first)
+   command: allure serve target/allure-results
 

@@ -38,11 +38,9 @@ public class RestResource {
 
     public static Response getTLES(String path, String format){
         return given(getRequestSpec()).
-                contentType("text/plain").
                 param("format",format).
         when().get(path).
         then().spec(getResponseSpec()).
-                contentType("text/plain").
                 extract().
                 response();
     }

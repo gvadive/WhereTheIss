@@ -53,4 +53,20 @@ public class DataLoader {
         else throw new RuntimeException("property get_timestamp_list_error is not specified in the data.properties file");
     }
 
+    public String get_timestamp_moreThan_10() {
+        String prop = properties.getProperty("get_timestamp_moreThan_10");
+        if (prop != null) return prop;
+        else
+            throw new RuntimeException("property get_timestamp_moreThan_10 is not specified in the data.properties file");
+    }
+
+    public String get_timestamp_moreThan_10WithSpace() {
+        String prop = properties.getProperty("get_timestamp_moreThan_10WithSpace");
+        if (prop != null) return prop;
+        else
+            throw new RuntimeException("property get_timestamp_moreThan_10WithSpace is not specified in the data.properties file");
+    }
+
+
+
 }

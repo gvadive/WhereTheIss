@@ -13,8 +13,8 @@ public class SpecBuilder {
 
     public static RequestSpecification getRequestSpec(){
         return new RequestSpecBuilder().
-                //setBaseUri(System.getProperty("BASE_URI")).
-                setBaseUri("https://api.wheretheiss.at").
+                setBaseUri(System.getProperty("BASE_URI")).
+                //setBaseUri("https://api.wheretheiss.at").
                 setContentType(ContentType.JSON).
                 addFilter(new AllureRestAssured()).
                 log(LogDetail.ALL).

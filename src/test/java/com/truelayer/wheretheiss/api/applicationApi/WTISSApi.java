@@ -1,7 +1,6 @@
 package com.truelayer.wheretheiss.api.applicationApi;
 
 import com.truelayer.wheretheiss.api.RestResource;
-import com.truelayer.wheretheiss.pojo.Wtiss;
 import io.restassured.response.Response;
 
 import static com.truelayer.wheretheiss.api.Route.*;
