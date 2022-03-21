@@ -1,0 +1,65 @@
+package com.discover.epp.settlement.aws;
+
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.lambda.AWSLambda;
+import com.amazonaws.services.lambda.AWSLambdaClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class AmazonClient {
+
+    private final String awsSessionToken;
+    private final ClientConfiguration clientConfiguration;
+    private final Map<String,Object> amazonClientMap;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AmazonClient.class);
+
+
+    public AmazonClient() {
+
+        this.awsSessionToken = System.getProperty("AWS_SESSION_TOKEN");
+        this.clientConfiguration = new ClientConfiguration();
+        clientConfiguration.withProxyHost("proxy.discoverfinancial.com");
+        clientConfiguration.withProxyPort(8080);
+        this.amazonClientMap = new LinkedHashMap<>();
+    }
+
+    public Map<String,Object> getAmazonClient() {
+
+        try {
+
+            AmazonDynamoDB dbClient;
+            AWSLambda lambdaClient;
+            if(awsSessionToken == null) {
+                LOGGER.info("This is a local environment client");
+                DefaultAWSCredentialsProviderChain dapc = new DefaultAWSCredentialsProviderChain();
+                dbClient = AmazonDynamoDBClientBuilder.standard().withClientConfiguration(clientConfiguration).withCredentials(dapc).withRegion(Regions.US_EAST_1).build();
+                lambdaClient = AWSLambdaClientBuilder.standard().withClientConfiguration(clientConfiguration).withCredentials(dapc).withRegion(Regions.US_EAST_1).build();
+                amazonClientMap.put("dbClient", dbClient);
+                amazonClientMap.put("lambdaClient", lambdaClient);
+                LOGGER.info("dbclient ");
+            } else {
+                LOGGER.info("This is a jenkins environment client");
+                DefaultAWSCredentialsProviderChain dapc = new DefaultAWSCredentialsProviderChain();
+                dbClient = AmazonDynamoDBClientBuilder.standard().withClientConfiguration(clientConfiguration).withCredentials(dapc).withRegion(Regions.US_EAST_1).build();
+                lambdaClient = AWSLambdaClientBuilder.standard().withClientConfiguration(clientConfiguration).withCredentials(dapc).withRegion(Regions.US_EAST_1).build();
+                amazonClientMap.put("dbClient", dbClient);
+                amazonClientMap.put("lambdaClient", lambdaClient);
+            }
+        } catch(Exception e) {
+
+            LOGGER.info("Amazon client Exception ",e);
+        }
+        return amazonClientMap;
+
+    }
+    
+
+
+}
