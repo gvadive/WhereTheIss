@@ -1,4 +1,4 @@
-package com.discover.epp.settlement.aws;
+package com.company.project.settlement.aws;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
@@ -25,7 +25,7 @@ public class AmazonClient {
 
         this.awsSessionToken = System.getProperty("AWS_SESSION_TOKEN");
         this.clientConfiguration = new ClientConfiguration();
-        clientConfiguration.withProxyHost("proxy.discoverfinancial.com");
+        clientConfiguration.withProxyHost("proxy.company.com");
         clientConfiguration.withProxyPort(8080);
         this.amazonClientMap = new LinkedHashMap<>();
     }
